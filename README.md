@@ -90,6 +90,24 @@ LendTrack is a Laravel-based loan management system for tracking borrowers, loan
    npm run dev
    ```
 
+## Deploying with Docker on Render
+
+The repository root contains the Laravel `Dockerfile`. In Render, create a **Web Service** from this repository, choose **Docker**, leave **Root Directory** empty, and use the repository's `main` branch. The image builds the Laravel assets and listens on port `10000`.
+
+Before the first successful deploy, add these environment variables to the Render service:
+
+- `APP_NAME` = `LendTrack`
+- `APP_ENV` = `production`
+- `APP_DEBUG` = `false`
+- `APP_KEY` = the output of `php artisan key:generate --show` from a local Laravel terminal; keep it secret
+- `APP_URL` = the HTTPS URL Render assigns to the service
+- `DB_CONNECTION` = `pgsql`
+- `DB_URL` = the internal connection URL from a PostgreSQL database in the same Render region
+
+Create and connect a PostgreSQL database before deploying. The container runs `php artisan migrate --force` when it starts. Do not use the local SQLite database for a hosted deployment. Render free services have storage and availability limits; use an appropriately persistent database and file storage before putting real borrower or loan records on a public service. Uploaded borrower photos need persistent/object storage as well.
+
+After the backend is live, set `VITE_LENDTRACK_URL` in `ionic-app/.env` to the Render HTTPS URL, then rebuild the Ionic app.
+
 ## Development Scripts
 
 - `npm run dev` — start Vite development server
