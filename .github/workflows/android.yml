@@ -1,4 +1,3 @@
-
 name: Build LendTrack Android APK
 
 on:
@@ -19,6 +18,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: ionic-app/package-lock.json
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -34,6 +35,13 @@ jobs:
         working-directory: ionic-app
         run: npm run build
 
+      - name: Add Android Platform
+        working-directory: ionic-app
+        run: |
+          if [ ! -d android ]; then
+            npx cap add android
+          fi
+
       - name: Sync Android
         working-directory: ionic-app
         run: npx cap sync android
@@ -47,3 +55,5 @@ jobs:
         with:
           name: LendTrack-APK
           path: ionic-app/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
