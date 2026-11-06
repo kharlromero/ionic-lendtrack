@@ -12,4 +12,8 @@ fi
 
 php artisan migrate --force
 
+if [ -n "${BOOTSTRAP_ADMIN_EMAIL:-}" ] || [ -n "${BOOTSTRAP_ADMIN_PASSWORD:-}" ]; then
+    php artisan lendtrack:bootstrap-admin
+fi
+
 exec "$@"

@@ -96,7 +96,7 @@
                         <button type="submit" class="btn-animated w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/10 transition hover:from-blue-500 hover:to-cyan-400">Sign in</button>
                     </form>
 
-                    @if (Route::has('register'))
+                    @if (Route::has('register') && config('auth.registration_enabled'))
                         <p class="mt-6 text-center text-sm text-slate-400">
                             New to LendTrack?
                             <a href="{{ route('register') }}" class="font-semibold text-blue-300 hover:text-blue-200">Create an account</a>

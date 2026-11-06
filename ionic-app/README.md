@@ -29,7 +29,7 @@ Open the Vite URL shown in the terminal (normally `http://localhost:8100`). The 
 
 ## 3. Test on a physical phone
 
-Set `VITE_LENDTRACK_URL` in `ionic-app/.env` to a reachable HTTPS backend URL. For LAN-only testing, use your development computer's LAN IP instead of `localhost` (for example `http://192.168.1.20:8000`), and ensure the phone and computer are on the same network. Never expose a development server to the public internet.
+Set `VITE_LENDTRACK_URL` in `ionic-app/.env` to a reachable HTTPS backend URL. For LAN-only testing, use your development computer's LAN IP instead of `localhost` (for example `http://192.168.1.20:8000`), and ensure the phone and computer are on the same network. Local HTTP testing requires temporarily enabling `server.cleartext` in the Capacitor config and `android:usesCleartextTraffic` in the Android manifest; keep both disabled for an HTTPS production build. Never expose a development server to the public internet.
 
 ## 4. Build Android
 

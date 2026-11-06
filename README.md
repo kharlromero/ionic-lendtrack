@@ -92,21 +92,13 @@ LendTrack is a Laravel-based loan management system for tracking borrowers, loan
 
 ## Deploying with Docker on Render
 
-The repository root contains the Laravel `Dockerfile`. In Render, create a **Web Service** from this repository, choose **Docker**, leave **Root Directory** empty, and use the repository's `main` branch. The image builds the Laravel assets and listens on port `10000`.
+The repository root contains a `render.yaml` Blueprint for a free demo backend and PostgreSQL database. Push the repository to a Git provider, connect it to Render, and create a Blueprint from the repository. The container builds the Laravel assets, listens on port `10000`, and runs database migrations on startup. The Blueprint disables public registration and generates the application key.
 
-Before the first successful deploy, add these environment variables to the Render service:
+Set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` as secret environment variables when Render prompts for them. Use a unique password with at least 12 characters. On first startup, the container creates the initial administrator only if the database has no users. Remove both bootstrap secrets from the service environment after that first successful deploy; do not put them in source control or send them in chat.
 
-- `APP_NAME` = `LendTrack`
-- `APP_ENV` = `production`
-- `APP_DEBUG` = `false`
-- `APP_KEY` = the output of `php artisan key:generate --show` from a local Laravel terminal; keep it secret
-- `APP_URL` = the HTTPS URL Render assigns to the service
-- `DB_CONNECTION` = `pgsql`
-- `DB_URL` = the internal connection URL from a PostgreSQL database in the same Render region
+The free configuration is only for a temporary demo with dummy data. Render free web services can sleep and have ephemeral local files; free PostgreSQL databases expire after 30 days. Do not use this configuration for actual borrower or loan records, or rely on it to retain uploaded borrower photos. Use paid persistent storage and database backups before handling real financial or personal information.
 
-Create and connect a PostgreSQL database before deploying. The container runs `php artisan migrate --force` when it starts. Do not use the local SQLite database for a hosted deployment. Render free services have storage and availability limits; use an appropriately persistent database and file storage before putting real borrower or loan records on a public service. Uploaded borrower photos need persistent/object storage as well.
-
-After the backend is live, set `VITE_LENDTRACK_URL` in `ionic-app/.env` to the Render HTTPS URL, then rebuild the Ionic app.
+After the backend is deployed, set `VITE_LENDTRACK_URL` in `ionic-app/.env` to the deployed HTTPS URL, then rebuild and sync the Android app. The APK cannot be finalized until Render assigns the backend URL.
 
 ## Development Scripts
 

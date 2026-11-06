@@ -32,4 +32,20 @@ class RegistrationTest extends TestCase
         $response->assertRedirect(route('login', absolute: false));
         $response->assertSessionHas('status', 'Account created. Please sign in to continue.');
     }
+
+    public function test_registration_is_unavailable_when_disabled(): void
+    {
+        config(['auth.registration_enabled' => false]);
+
+        $this->get('/register')->assertNotFound();
+
+        $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ])->assertNotFound();
+
+        $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
+    }
 }
