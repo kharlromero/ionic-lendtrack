@@ -9,7 +9,7 @@ COPY resources ./resources
 COPY vite.config.js tailwind.config.js postcss.config.js ./
 RUN npm run build
 
-FROM php:8.3-apache
+FROM php:8.3-apache-bookworm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
